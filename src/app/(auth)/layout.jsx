@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Layout, Menu, Avatar, Dropdown } from "antd";
 import {
   DashboardOutlined,
@@ -27,14 +27,13 @@ const iconMap = {
 };
 
 export default function AuthLayout({ children }) {
-  const user = getLoggedInUser()
+  const user = getLoggedInUser();
   const { logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
-    
     if (!user) {
       router.push("/login");
     }
@@ -79,45 +78,47 @@ export default function AuthLayout({ children }) {
   const sideMenuItems = filterMenuByRole(menuConfig, user?.role);
 
   return (
-    <Layout className="auth-layout">
-      {/* Header */}
-      <Header className="auth-header">
-        <div className="logo" onClick={() => router.push("/dashboard")}>
-          <span>MyApp</span>
-        </div>
-        <div className="header-right">
-          <Dropdown menu={avatarMenu} placement="bottomRight">
-            <div className="user-info">
-              <Avatar style={{ backgroundColor: "#1890ff" }}>
-                {user?.name?.charAt(0) || "U"}
-              </Avatar>
-              <span className="username">{user?.name}</span>
-            </div>
-          </Dropdown>
-        </div>
-      </Header>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Layout className="auth-layout">
+        {/* Header */}
+        <Header className="auth-header">
+          <div className="logo" onClick={() => router.push("/dashboard")}>
+            <span>MyApp</span>
+          </div>
+          <div className="header-right">
+            <Dropdown menu={avatarMenu} placement="bottomRight">
+              <div className="user-info">
+                <Avatar style={{ backgroundColor: "#1890ff" }}>
+                  {user?.name?.charAt(0) || "U"}
+                </Avatar>
+                <span className="username">{user?.name}</span>
+              </div>
+            </Dropdown>
+          </div>
+        </Header>
 
-      <Layout>
-        {/* Sidebar */}
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
-          className="auth-sider"
-        >
-          <Menu
-            theme="dark"
-            mode="inline"
-            selectedKeys={[pathname]}
-            items={sideMenuItems}
-          />
-        </Sider>
-
-        {/* Content */}
         <Layout>
-          <Content className="auth-content">{children}</Content>
+          {/* Sidebar */}
+          <Sider
+            collapsible
+            collapsed={collapsed}
+            onCollapse={(value) => setCollapsed(value)}
+            className="auth-sider"
+          >
+            <Menu
+              theme="dark"
+              mode="inline"
+              selectedKeys={[pathname]}
+              items={sideMenuItems}
+            />
+          </Sider>
+
+          {/* Content */}
+          <Layout>
+            <Content className="auth-content">{children}</Content>
+          </Layout>
         </Layout>
       </Layout>
-    </Layout>
+    </Suspense>
   );
 }

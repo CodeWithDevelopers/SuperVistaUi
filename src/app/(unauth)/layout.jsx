@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../components/AuthProvider";
 import { getLoggedInUser } from "@/utils/utils";
@@ -16,5 +16,9 @@ console.log("user", user);
     }
   }, [user, router]);
 
-  return <>{children}</>;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      {children}
+    </Suspense>
+  );
 }
