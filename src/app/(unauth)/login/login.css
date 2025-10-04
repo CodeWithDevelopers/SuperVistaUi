@@ -1,0 +1,124 @@
+.login-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background: #f0f2f5;
+}
+
+/* Left Side */
+.login-left,
+.login-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.login-left {
+    /* background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); */
+    color: white;
+    text-align: center;
+}
+
+.content-box {
+    max-width: 500px;
+}
+
+.login-welcome-title {
+    color: #000000 !important;
+    font-size: 34px;
+    margin-top: 20px;
+    margin-bottom: 12px;
+}
+
+.login-subtitle {
+    color: #000000;
+    font-size: 16px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.login-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+/* Right Side Card */
+.login-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 30px 28px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    background: #fff;
+    text-align: center;
+    animation: fadeInUp 0.6s ease;
+}
+
+.login-card-header {
+    margin-bottom: 20px;
+}
+
+.login-title {
+    margin-bottom: 4px;
+}
+
+.login-form {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.forgot-password-row {
+    text-align: right;
+    margin-bottom: 8px;
+}
+
+.login-btn {
+    margin-top: 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    background: #1890ff;
+}
+
+.login-btn:hover {
+    background: #40a9ff !important;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .login-wrapper {
+        flex-direction: column;
+    }
+
+    .login-left,
+    .login-right {
+        width: 100%;
+        flex: unset;
+        padding: 24px;
+    }
+
+    .login-card {
+        margin-top: 20px;
+    }
+}

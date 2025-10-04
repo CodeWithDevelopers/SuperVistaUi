@@ -1,0 +1,114 @@
+/* Container to center */
+.otp-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* Card */
+.otp-card {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    width: 400px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Title */
+.otp-title {
+    margin-bottom: 10px;
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+}
+
+.otp-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Inputs */
+.otp-inputs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.otp-input {
+    width: 45px;
+    height: 55px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 22px;
+    text-align: center;
+    outline: none;
+    transition: 0.3s;
+}
+
+.otp-input:focus {
+    border-color: #4facfe;
+    box-shadow: 0 0 8px rgba(79, 172, 254, 0.4);
+}
+
+/* Button */
+.otp-button {
+    width: 100%;
+    padding: 12px;
+    background: #4facfe;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.otp-button:hover {
+    background: #3a8bd7;
+}
+
+/* Resend */
+.otp-resend {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+}
+
+.otp-resend span {
+    color: #4facfe;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.otp-resend span:hover {
+    text-decoration: underline;
+}
+
+.resend-link {
+    color: #1890ff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.resend-link:hover {
+    text-decoration: underline;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

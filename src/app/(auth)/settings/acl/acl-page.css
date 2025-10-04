@@ -1,0 +1,60 @@
+.acl-container {
+    padding: 20px;
+    background: #f4f6f9;
+    min-height: 100vh;
+}
+
+.acl-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.acl-title {
+    margin: 0;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.role-select {
+    width: 200px;
+}
+
+.acl-subtitle {
+    margin-bottom: 20px;
+    color: #555;
+    font-size: 14px;
+}
+
+.acl-loading {
+    text-align: center;
+    padding: 40px;
+}
+
+.resource-card {
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+}
+
+.resource-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.actions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.action-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.action-label {
+    font-size: 14px;
+    color: #333;
+}

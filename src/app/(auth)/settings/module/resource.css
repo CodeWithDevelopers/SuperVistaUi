@@ -1,0 +1,58 @@
+.resource-container {
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.resource-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.resource-header h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+}
+
+.resource-table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.resource-name {
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.action-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.action-tag {
+    background: #e6f4ff;
+    color: #1677ff;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.table-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.loading-box {
+    text-align: center;
+    padding: 50px;
+}
+
+.resource-modal .ant-modal-content {
+    border-radius: 12px;
+}

@@ -1,0 +1,48 @@
+.auth-layout {
+    min-height: 100vh;
+}
+
+.auth-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #001529;
+    padding: 0 20px;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 10px;
+    color: #fff;
+}
+
+.username {
+    font-weight: 500;
+    color: #fff;
+}
+
+.auth-sider {
+    background: #001529;
+}
+
+.auth-content {
+    margin: 20px;
+    padding: 20px;
+    background: #fff;
+    min-height: 80vh;
+    border-radius: 8px;
+}

@@ -1,0 +1,31 @@
+.users-page {
+    padding: 24px;
+}
+
+.users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.user-form-card,
+.user-detail-card {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.users-loading {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.ant-table-tbody>tr:hover {
+    cursor: pointer;
+    background-color: #f0f2f5;
+}
+

@@ -1,0 +1,38 @@
+.mapping-container {
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.mapping-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.mapping-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.mapping-table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.resource-name {
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.loading-box {
+    text-align: center;
+    padding: 40px;
+}
+
+.mapping-footer {
+    margin-top: 20px;
+    text-align: right;
+}
