@@ -8,7 +8,7 @@ import {
   ExclamationCircleOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
-import "./selfMessage.css";
+import "./SelfMessage.css";
 
 let addMessageFn = null;
 
