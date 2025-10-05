@@ -15,6 +15,7 @@ import { useAuth } from "../../components/AuthProvider";
 import "./auth-layout.css";
 import { menuConfig } from "@/staticData/data";
 import { getLoggedInUser } from "@/utils/utils";
+import PreloaderPage from "@/components/preloader/preloader";
 
 const { Header, Sider, Content } = Layout;
 
@@ -62,32 +63,58 @@ export default function AuthLayout({ children }) {
     ],
   };
 
-  // Recursive function to filter menu based on role
+  /**
+   * ✅ Recursively build menu items and only add `onClick` for final items
+   */
   const filterMenuByRole = (menu, role) => {
     return menu
       .filter((item) => item.role.includes(role))
-      .map((item) => ({
-        key: item.link,
-        label: item.label,
-        icon: iconMap[item.icon] || null,
-        children: item.children ? filterMenuByRole(item.children, role) : null,
-        onClick: item.link !== "#" ? () => router.push(item.link) : undefined,
-      }));
+      .map((item) => {
+        const hasChildren = item.children && item.children.length > 0;
+
+        return {
+          key: item.link,
+          label: item.label,
+          icon: iconMap[item.icon] || null,
+          children: hasChildren
+            ? filterMenuByRole(item.children, role)
+            : undefined,
+          onClick:
+            !hasChildren && item.link !== "#"
+              ? () => router.push(item.link)
+              : undefined, // only leaf nodes navigate
+        };
+      });
   };
 
   const sideMenuItems = filterMenuByRole(menuConfig, user?.role);
 
+  /**
+   * ✅ Handle menu clicks properly
+   * This ensures only leaf node clicks trigger navigation.
+   */
+  const handleMenuClick = (info) => {
+    const { key } = info;
+    if (key && key !== "#") {
+      router.push(key);
+    }
+  };
+
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<PreloaderPage />}>
       <Layout className="auth-layout">
         {/* Header */}
         <Header className="auth-header">
-          <div className="logo" onClick={() => router.push("/dashboard")}>
+          <div
+            className="logo"
+            onClick={() => router.push("/dashboard")}
+            style={{ cursor: "pointer" }}
+          >
             <span>MyApp</span>
           </div>
           <div className="header-right">
             <Dropdown menu={avatarMenu} placement="bottomRight">
-              <div className="user-info">
+              <div className="user-info" style={{ cursor: "pointer" }}>
                 <Avatar style={{ backgroundColor: "#1890ff" }}>
                   {user?.name?.charAt(0) || "U"}
                 </Avatar>
@@ -110,6 +137,7 @@ export default function AuthLayout({ children }) {
               mode="inline"
               selectedKeys={[pathname]}
               items={sideMenuItems}
+              onClick={handleMenuClick}
             />
           </Sider>
 

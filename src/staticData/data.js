@@ -28,6 +28,50 @@ export const menuConfig = [
         role: ["super-admin", "admin"],
         children: [
             {
+                key: "common",
+                link: "/settings/common/",
+                label: "Common",
+                icon: "DashboardOutlined",
+                role: ["super-admin", "admin"],
+                children: [
+                    {
+                        key: "country",
+                        link: "/settings/common/country",
+                        label: "Country",
+                        icon: "DashboardOutlined",
+                        role: ["super-admin"],
+                    },
+                    {
+                        key: "state",
+                        link: "/settings/common/state",
+                        label: "State",
+                        icon: "DashboardOutlined",
+                        role: ["super-admin"],
+                    },
+                    {
+                        key: "cities",
+                        link: "/settings/common/city",
+                        label: "Cities",
+                        icon: "DashboardOutlined",
+                        role: ["super-admin"],
+                    },
+                    {
+                        key: "region",
+                        link: "/settings/common/region",
+                        label: "Region",
+                        icon: "DashboardOutlined",
+                        role: ["super-admin"],
+                    },
+                    {
+                        key: "sub-region",
+                        link: "/settings/common/sub-region",
+                        label: "Sub-Region",
+                        icon: "DashboardOutlined",
+                        role: ["super-admin"],
+                    },
+                ]
+            },
+            {
                 key: "module",
                 link: "/settings/module",
                 label: "Module",
