@@ -7,7 +7,7 @@ const HTTPRequest = () => {
     const token = Cookies.get("token");
     const DEFAULT_HEADERS = {
         "Content-Type": "application/json",
-        ...(token && { "Authorization" :`Bearer ${token}`})   
+        ...(token && { "Authorization": `Bearer ${token}` })
     };
 
     // 👉 GET Request
@@ -44,7 +44,7 @@ const HTTPRequest = () => {
         putData,
         putURI,
         returnJson = false,
-        customHeader = DEFAULT_HEADERS
+        customHeader = null
     ) => {
         try {
             let queryString = "";
@@ -52,10 +52,22 @@ const HTTPRequest = () => {
                 queryString = "?" + new URLSearchParams(params).toString();
             }
 
+            // Check if putData is FormData
+            const isFormData = putData instanceof FormData;
+
+            let headers = customHeader;
+            if (!headers) {
+                if (isFormData) {
+                    headers = token ? { "Authorization": `Bearer ${token}` } : {};
+                } else {
+                    headers = DEFAULT_HEADERS;
+                }
+            }
+
             const response = await fetch(API_BASE_URL + putURI + queryString, {
                 method: "PUT",
-                headers: customHeader,
-                body: JSON.stringify(putData),
+                headers: headers,
+                body: isFormData ? putData : JSON.stringify(putData),
             });
 
             if (!response.ok) throw new Error(`PUT failed: ${response.status}`);
@@ -74,7 +86,7 @@ const HTTPRequest = () => {
         postData,
         postURI,
         returnJson = false,
-        customHeader = DEFAULT_HEADERS
+        customHeader = null
     ) => {
         try {
             let queryString = "";
@@ -82,10 +94,24 @@ const HTTPRequest = () => {
                 queryString = "?" + new URLSearchParams(params).toString();
             }
 
+            // Check if postData is FormData
+            const isFormData = postData instanceof FormData;
+
+            // Prepare headers - don't set Content-Type for FormData (browser will set it with boundary)
+            let headers = customHeader;
+            if (!headers) {
+                if (isFormData) {
+                    // Only set Authorization, let browser set Content-Type with boundary
+                    headers = token ? { "Authorization": `Bearer ${token}` } : {};
+                } else {
+                    headers = DEFAULT_HEADERS;
+                }
+            }
+
             const response = await fetch(API_BASE_URL + postURI + queryString, {
                 method: "POST",
-                headers: customHeader,
-                body: JSON.stringify(postData),
+                headers: headers,
+                body: isFormData ? postData : JSON.stringify(postData),
             });
 
             if (!response.ok) throw new Error(`POST failed: ${response.status}`);
@@ -104,7 +130,7 @@ const HTTPRequest = () => {
         deleteData,
         deleteURI,
         returnJson = false,
-        customHeader = DEFAULT_HEADERS
+        customHeader = null
     ) => {
         try {
             let queryString = "";
@@ -114,7 +140,7 @@ const HTTPRequest = () => {
 
             const response = await fetch(API_BASE_URL + deleteURI + queryString, {
                 method: "DELETE",
-                headers: customHeader,
+                headers: customHeader || DEFAULT_HEADERS,
                 body: JSON.stringify(deleteData ?? {}),
             });
 

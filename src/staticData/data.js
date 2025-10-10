@@ -94,4 +94,11 @@ export const menuConfig = [
             },
         ],
     },
+    {
+        key: "menus",
+        link: "/menus",
+        label: "Menus",
+        icon: "UserOutlined",
+        role: ["super-admin", "admin", "employee", "manager"],
+    },
 ];

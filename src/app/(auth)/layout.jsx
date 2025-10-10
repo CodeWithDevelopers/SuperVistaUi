@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Suspense, useEffect, useState } from "react";
-import { Layout, Menu, Avatar, Dropdown } from "antd";
+import { Layout, Menu, Avatar, Dropdown, Spin } from "antd";
 import {
   DashboardOutlined,
   UserOutlined,
@@ -13,17 +13,17 @@ import {
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "../../components/AuthProvider";
 import "./auth-layout.css";
-import { menuConfig } from "@/staticData/data";
 import { getLoggedInUser } from "@/utils/utils";
 import PreloaderPage from "@/components/preloader/preloader";
+import HTTPRequest from "@/services/request";
+import { selfMessage } from "@/components/message/SelfMessage";
 
 const { Header, Sider, Content } = Layout;
 
-// Map string to actual AntD icon
 const iconMap = {
   DashboardOutlined: <DashboardOutlined />,
-  UserOutlined: <UserOutlined />,
   SettingOutlined: <SettingOutlined />,
+  UserOutlined: <UserOutlined />,
   UnorderedListOutlined: <UnorderedListOutlined />,
 };
 
@@ -33,16 +33,44 @@ export default function AuthLayout({ children }) {
   const router = useRouter();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(true);
+  const [menuConfig, setMenuConfig] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  /** ✅ Fetch Menu Config from API */
+  const fetchMenuConfig = async () => {
+    try {
+      setLoading(true);
+      const response = await HTTPRequest().getAction(
+        null,
+        "/menus/main_menu",
+        true
+      );
+
+      if (response?.success) {
+        const config = response.data?.config || response.data || [];
+        setMenuConfig(config);
+      } else {
+        selfMessage.error(response?.message || "Failed to fetch menu", "error");
+      }
+    } catch (error) {
+      console.error("Error fetching main menu:", error);
+      selfMessage.error("Failed to load menu configuration", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (!user) {
-      router.push("/login");
-    }
+    fetchMenuConfig();
+  }, []);
+
+  useEffect(() => {
+    if (!user) router.push("/login");
   }, [user, router]);
 
   if (!user) return null;
 
-  // Dropdown menu for avatar
+  /** Avatar Dropdown Menu */
   const avatarMenu = {
     items: [
       {
@@ -63,48 +91,58 @@ export default function AuthLayout({ children }) {
     ],
   };
 
-  /**
-   * ✅ Recursively build menu items and only add `onClick` for final items
-   */
-  const filterMenuByRole = (menu, role) => {
-    return menu
-      .filter((item) => item.role.includes(role))
-      .map((item) => {
-        const hasChildren = item.children && item.children.length > 0;
+  /** ✅ Build Sidebar Menu Items Recursively */
+  const buildMenuItems = (items, role) => {
+    return (
+      items
+        ?.filter((item) => item.status === 1 && !item.is_deleted)
+        .map((item) => {
+          const hasChildren =
+            Array.isArray(item.children) && item.children.length > 0;
+          const children = hasChildren
+            ? buildMenuItems(item.children, role)
+            : [];
 
-        return {
-          key: item.link,
-          label: item.label,
-          icon: iconMap[item.icon] || null,
-          children: hasChildren
-            ? filterMenuByRole(item.children, role)
-            : undefined,
-          onClick:
-            !hasChildren && item.link !== "#"
-              ? () => router.push(item.link)
-              : undefined, // only leaf nodes navigate
-        };
-      });
+          const isAllowed = item.allowed_roles_types?.includes(role);
+          if (!isAllowed && children.length === 0) return null;
+
+          let icon =
+            iconMap[item.icon] ||
+            (item.title?.toLowerCase().includes("setting") ? (
+              <SettingOutlined />
+            ) : item.title?.toLowerCase().includes("menu") ? (
+              <UnorderedListOutlined />
+            ) : (
+              <DashboardOutlined />
+            ));
+
+          return {
+            key: item.link || item.key,
+            label: item.title,
+            icon,
+            children: children.length > 0 ? children : undefined,
+            onClick:
+              children.length === 0 && item.link && item.link !== "#"
+                ? () => router.push(item.link)
+                : undefined,
+          };
+        })
+        .filter(Boolean) || []
+    );
   };
 
-  const sideMenuItems = filterMenuByRole(menuConfig, user?.role);
+  const sideMenuItems = buildMenuItems(menuConfig, user?.role);
 
-  /**
-   * ✅ Handle menu clicks properly
-   * This ensures only leaf node clicks trigger navigation.
-   */
-  const handleMenuClick = (info) => {
-    const { key } = info;
-    if (key && key !== "#") {
-      router.push(key);
-    }
+  /** Handle Sidebar Navigation */
+  const handleMenuClick = ({ key }) => {
+    if (key && key !== "#") router.push(key);
   };
 
   return (
     <Suspense fallback={<PreloaderPage />}>
       <Layout className="auth-layout">
-        {/* Header */}
-        <Header className="auth-header">
+        {/* Fixed Header */}
+        <Header className="auth-header fixed-header">
           <div
             className="logo"
             onClick={() => router.push("/dashboard")}
@@ -114,9 +152,12 @@ export default function AuthLayout({ children }) {
           </div>
           <div className="header-right">
             <Dropdown menu={avatarMenu} placement="bottomRight">
-              <div className="user-info" style={{ cursor: "pointer" }}>
-                <Avatar style={{ backgroundColor: "#1890ff" }}>
-                  {user?.name?.charAt(0) || "U"}
+              <div className="user-info">
+                <Avatar
+                  src={user?.profile?.[0]?.url}
+                  style={{ backgroundColor: "#1890ff" }}
+                >
+                  {user?.name?.charAt(0)?.toUpperCase() || "U"}
                 </Avatar>
                 <span className="username">{user?.name}</span>
               </div>
@@ -124,25 +165,31 @@ export default function AuthLayout({ children }) {
           </div>
         </Header>
 
-        <Layout>
-          {/* Sidebar */}
+        <Layout hasSider>
+          {/* Fixed Sidebar */}
           <Sider
             collapsible
             collapsed={collapsed}
             onCollapse={(value) => setCollapsed(value)}
-            className="auth-sider"
+            className="auth-sider fixed-sider"
           >
-            <Menu
-              theme="dark"
-              mode="inline"
-              selectedKeys={[pathname]}
-              items={sideMenuItems}
-              onClick={handleMenuClick}
-            />
+            {loading ? (
+              <div style={{ textAlign: "center", marginTop: "30px" }}>
+                <Spin tip="Loading Menu..." />
+              </div>
+            ) : (
+              <Menu
+                theme="dark"
+                mode="inline"
+                selectedKeys={[pathname]}
+                items={sideMenuItems}
+                onClick={handleMenuClick}
+              />
+            )}
           </Sider>
 
-          {/* Content */}
-          <Layout>
+          {/* Scrollable Content */}
+          <Layout className="main-layout">
             <Content className="auth-content">{children}</Content>
           </Layout>
         </Layout>

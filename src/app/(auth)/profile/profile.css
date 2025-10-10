@@ -1,13 +1,13 @@
 .profile-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     height: 100vh;
     background: #f0f2f5;
 }
 
 .profile-card {
     text-align: center;
-    padding: 20px;
+    /* padding: 20px; */
     border-radius: 12px;
 }
