@@ -1,5 +1,44 @@
 .dashboard-container {
     padding: 20px;
-    background: #f9f9f9;
+    background: #f5f7fa;
     min-height: 100vh;
+}
+
+.dashboard-title {
+    font-weight: 700;
+    color: #001529;
+    margin-bottom: 20px;
+}
+
+.dashboard-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: #fff;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.chart-card {
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.ant-statistic-title {
+    font-size: 14px;
+    color: #595959;
+}
+
+.ant-statistic-content-value {
+    font-size: 22px;
+}
+
+@media (max-width: 768px) {
+    .dashboard-card {
+        margin-bottom: 12px;
+    }
 }

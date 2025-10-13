@@ -55,4 +55,17 @@ export const formatString = (str) => {
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // capitalize
         .join(" ");                          // join back with space
 };
+
+export const formatCurrency = (amount, currency = "USD") => {
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: currency,
+        minimumFractionDigits: 2,
+    }).format(amount);
+};
+
+export const formatDependnt = (data) => {
+    if (!data) return "";
+    return ``
+}
  

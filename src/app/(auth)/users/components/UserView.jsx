@@ -140,16 +140,22 @@ const UserView = ({ user }) => {
               {user.address.line2 || "-"}
             </Descriptions.Item>
             <Descriptions.Item label="City">
-              {user.address.city || "-"}
+              {user.address._city_name
+                ? user.address._city_name
+                : user.address.city || "-"}
             </Descriptions.Item>
             <Descriptions.Item label="State">
-              {user.address.state || "-"}
+              {user.address._state_name
+                ? user.address._state_name
+                : user.address.state || "-"}
             </Descriptions.Item>
             <Descriptions.Item label="Zip Code">
               {user.address.zipCode || "-"}
             </Descriptions.Item>
             <Descriptions.Item label="Country">
-              {user.address.country || "-"}
+              {user.address._country_name
+                ? user.address._country_name
+                : user.address.country || "-"}
             </Descriptions.Item>
           </Descriptions>
         </Card>
